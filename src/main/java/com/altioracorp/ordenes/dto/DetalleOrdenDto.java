@@ -12,6 +12,10 @@ public class DetalleOrdenDto {
 	private BigDecimal precioUnitario;
 	
 	private Long idOrden;
+	
+	private Long idArticulo;
+	
+	private Long cantidad;
 
 	public Long getId() {
 		return id;
@@ -51,6 +55,22 @@ public class DetalleOrdenDto {
 
 	public void setIdOrden(Long idOrden) {
 		this.idOrden = idOrden;
+	}
+
+	public Long getIdArticulo() {
+		return idArticulo;
+	}
+
+	public void setIdArticulo(Long idArticulo) {
+		this.idArticulo = idArticulo;
+	}
+
+	public Long getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(Long cantidad) {
+		this.cantidad = cantidad;
 	}
 	
 }
