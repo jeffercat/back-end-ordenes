@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -30,6 +32,11 @@ public class Orden implements Serializable{
 	@Temporal(TemporalType.DATE)
 	private Date fechaCreacion;
 
+	@NotEmpty(message = "no puede estar vacío.")
+	@Size(min=8, max = 50, message = "el tamaño tiene que estar entre 8 y 50")
+	@Column(nullable = false, length = 50)
+	private String cliente;
+	
 	@JsonIgnoreProperties(value={"orden", "hibernateLazyInitializer", "handler"}, allowSetters=true)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "orden", cascade = CascadeType.ALL)
 	private List<DetalleOrden> detallesOrdenes;
@@ -52,6 +59,14 @@ public class Orden implements Serializable{
 
 	public void setDetallesOrdenes(List<DetalleOrden> detallesOrdenes) {
 		this.detallesOrdenes = detallesOrdenes;
+	}
+
+	public String getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(String cliente) {
+		this.cliente = cliente;
 	}
 
 
