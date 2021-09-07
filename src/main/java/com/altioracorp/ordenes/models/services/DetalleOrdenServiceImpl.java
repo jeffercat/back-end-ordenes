@@ -44,6 +44,7 @@ public class DetalleOrdenServiceImpl implements IDetalleOrdenService {
 		detalle.setNombre(detalleOrden.getNombre());
 		detalle.setPrecioUnitario(detalleOrden.getPrecioUnitario());
 		detalle.setOrden(orden);
+		detalle.setCantidad(detalleOrden.getCantidad());
 		return detalleOrdenDao.save(detalle);
 	}
 
