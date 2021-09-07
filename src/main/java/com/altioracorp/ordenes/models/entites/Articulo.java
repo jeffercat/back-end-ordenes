@@ -33,6 +33,9 @@ public class Articulo implements Serializable{
 	@Column(name = "precio_unitario", nullable = false, precision = 10, scale = 2 )
 	private BigDecimal precioUnitario;
 		
+	@Column(name = "cantidad")
+	private Long cantidad;
+	
 	public Long getId() {
 		return id;
 	}
@@ -64,6 +67,14 @@ public class Articulo implements Serializable{
 
 	public void setPrecioUnitario(BigDecimal precioUnitario) {
 		this.precioUnitario = precioUnitario;
+	}
+
+	public Long getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(Long cantidad) {
+		this.cantidad = cantidad;
 	}
 
 
