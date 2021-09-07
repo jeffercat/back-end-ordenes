@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.altioracorp.ordenes.dto.DetalleOrdenDto;
+import com.altioracorp.ordenes.models.entites.Articulo;
 import com.altioracorp.ordenes.models.entites.DetalleOrden;
+import com.altioracorp.ordenes.models.services.IArticuloService;
 import com.altioracorp.ordenes.models.services.IDetalleOrdenService;
 
 @CrossOrigin(origins = { "http://localhost:4200" }, methods = { RequestMethod.GET, RequestMethod.POST,
@@ -33,6 +35,8 @@ public class DetalleOrdenRestController {
 
 	@Autowired
 	private IDetalleOrdenService detalleOrdenService;
+	@Autowired
+	private IArticuloService articuloService;
 
 	@PostMapping("/detalles")
 	public ResponseEntity<?> create(@Valid @RequestBody DetalleOrdenDto detalleOrden, BindingResult result) {
@@ -48,7 +52,15 @@ public class DetalleOrdenRestController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
 		}
 		try {
-			detalleOrdenNew = detalleOrdenService.save(detalleOrden);
+			Articulo art = articuloService.findById(detalleOrden.getIdArticulo());
+			if (art.getCantidad() >= detalleOrden.getCantidad()) {
+				art.setCantidad(art.getCantidad()-detalleOrden.getCantidad());
+				articuloService.save(art);
+				detalleOrdenNew = detalleOrdenService.save(detalleOrden);
+			} else {
+				response.put("mensaje", "Error al registrar el detalle, stock insuficiente.");
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CONFLICT);
+			}
 
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al realizar el insert a la Base de Datos");
@@ -56,7 +68,7 @@ public class DetalleOrdenRestController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 
 		}
-		response.put("mensaje", "El detalle ha sido creado a la orden con Ã©xito.");
+		response.put("mensaje", "El detalle ha sido creado a la orden con Žxito.");
 		response.put("detalleOrden", detalleOrdenNew);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
