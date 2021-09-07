@@ -37,6 +37,9 @@ public class DetalleOrden implements Serializable{
 	@Column(name = "precio_unitario", nullable = false, precision = 10, scale = 2 )
 	private BigDecimal precioUnitario;
 
+	@Column(name = "cantidad")
+	private Long cantidad;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="orden_id", nullable = false)
 	@JsonIgnore
@@ -96,6 +99,16 @@ public class DetalleOrden implements Serializable{
 
 	public void setOrden(Orden orden) {
 		this.orden = orden;
+	}
+
+
+
+	public Long getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(Long cantidad) {
+		this.cantidad = cantidad;
 	}
 
 
